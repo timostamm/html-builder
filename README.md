@@ -3,7 +3,54 @@ PHP HTML Builder
 
 A simple library to generate HTML fragments with a jquery-like interface. 
 
-This library does not parse HTML, and it does not provide element lookup via selectors or otherwise. It is focused on quick but extensible creation of simple HTML fragments, for example embed codes. 
+This library does not parse HTML, and it does not provide element lookup via selectors or otherwise. It is focused on building simple HTML fragments, for example embed codes, while taking care of proper escaping and other simple syntax rules. Its purpose is to replace manual concatenation of strings.
+
+
+
+### Examples
+
+```php
+function generateBarcodeHtml( $barcode ) {
+	
+	$generator = new BarcodeGeneratorHTML();
+	$htmlCode = $generator->getBarcode( $$barcode->toString(), $$barcode->getType(), 1, 45 );
+	
+	$el = Html::element('div');
+	$el->addClass('barcode-container');
+	
+	Html::element('div')
+		->addClass('barcode-bars')
+		->html( $htmlCode )
+		->appendTo($el);
+	
+	Html::element('div')
+		->addClass('barcode-number')
+		->text( $normalizedValue->toString() )
+		->appendTo($el);
+	
+	return $el;
+}
+
+public function generateMenu(array $items) {
+	
+	$ul = Html::element('ul');
+	
+	foreach ( $this->items as $item ) {
+
+		$li = Html::element('li')
+			->appendTo( $ul )
+			->toggleClass('active', $item['id'] === $this->activeId);
+		
+		Html::element('a')
+			->attr('href', '/' . $item['url_key'] . '.html')
+			->text( $item['title'] )
+			->appendTo( $li );
+		
+	}
+	
+	return (string)$ul;
+}
+```
 
 
 ### Factory methods
@@ -119,9 +166,3 @@ Changes the tag name.
 
 
 
-
-
-## Example
-
-```php
-```

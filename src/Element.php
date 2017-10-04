@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 namespace TS\Text\HtmlBuilder;
 
@@ -25,7 +25,37 @@ class Element extends Node {
 			}
 		}
 	}
-		
+	
+	// since we do not parse html, it does not make much sense to expose a query api
+	/*
+	public function children() {
+		$this->children(function(Node $node){
+			return $node instanceof Element;
+		});
+	}
+	
+	public function find(callable $where) {
+		if ( $where($this) ) {
+			yield $this;
+		}
+		$eles = $this->descendants(function(Node $node){
+			return $node instanceof Element && $where($node);
+		});
+		foreach ($eles as $el) {
+			yield $el;
+		}
+	}
+	
+	public function closest(callable $where) {
+		if ( $where($this) ) {
+			return $this;
+		}
+		return $this->ancestor(function(Node $node){
+			return $node instanceof Element && $where($node);
+		});
+	}
+	*/
+	
 	
 	public function removeAttr($name) {
 		$this->removeAttribute( $name );
@@ -35,7 +65,7 @@ class Element extends Node {
 	
 	public function attr($name, $value) {
 		
-		if ( 1 == func_num_args() ) 
+		if ( 1 == func_num_args() )
 		{
 			if ( false === $this->hasAttribute($name) ) {
 				return null;
@@ -43,24 +73,24 @@ class Element extends Node {
 			
 			return $this->getAttribute($name, true);
 			
-		} 
-		else if ( 2 == func_num_args() ) 
+		}
+		else if ( 2 == func_num_args() )
 		{
 			
 			$this->setAttribute($name, $value);
 			
 			return $this;
 			
-		} 
-		else if ( 0 === func_num_args() ) 
+		}
+		else if ( 0 === func_num_args() )
 		{
 			
 			return $this->getAttributes();
 			
-		} 
-		else 
+		}
+		else
 		{
-			throw new \InvalidArgumentException(); 
+			throw new \InvalidArgumentException();
 		}
 		
 	}
@@ -133,12 +163,12 @@ class Element extends Node {
 	
 	
 	public function text() {
-		if ( 1 === func_num_args() ) 
+		if ( 1 === func_num_args() )
 		{
 			$this->addChild( new Text( func_get_arg(0) ) );
 			return $this;
 		}
-		else if ( 0 === func_num_args() ) { 
+		else if ( 0 === func_num_args() ) {
 			$txt = '';
 			
 			if ($this instanceof Text) {
@@ -152,7 +182,7 @@ class Element extends Node {
 			
 			return $txt;
 		}
-		else 
+		else
 		{
 			throw new \InvalidArgumentException();
 		}
@@ -170,7 +200,7 @@ class Element extends Node {
 	public function hasClass( $class ) {
 		return in_array($class, $this->getClasses());
 	}
-
+	
 	public function removeClass( $class ) {
 		$o = $this->getClasses();
 		$i = array_search($class, $o);
@@ -185,7 +215,7 @@ class Element extends Node {
 		}
 		return $this;
 	}
-
+	
 	public function toggleClass( $class, $state ) {
 		$this->removeClass($class);
 		if ( $state ) {
@@ -249,7 +279,7 @@ class Element extends Node {
 		return implode(' ', $parts);
 	}
 	
-
+	
 	public function __toString() {
 		return $this->toString();
 	}
