@@ -63,7 +63,7 @@ Creates an element.
 
 Creates a comment node.
 
-##### Html::comment($text)
+##### Html::text($text)
 
 Creates a text node.
 
